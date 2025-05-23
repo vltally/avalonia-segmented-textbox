@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Input.Platform;
+using Avalonia.Media;
 
 namespace AvaloniaApplication3.Views
 {
@@ -103,53 +104,75 @@ namespace AvaloniaApplication3.Views
         {
             if (_stackPanel == null)
                 return;
+        
             _stackPanel.Children.Clear();
             _textBoxes.Clear();
+        
             for (int i = 0; i < SegmentCount; i++)
             {
                 var tb = new TextBox
                 {
-                    Width = 40,
-                    MaxLength = 1,
-                    Margin = new Thickness(2, 0),
-                    AcceptsReturn = false,
-                    AcceptsTab = false
                 };
+        
                 AttachHandlers(tb);
                 tb.TextChanged += (_, _) => OnTextChanged(tb);
                 tb.AddHandler(KeyDownEvent, TextBox_KeyDown, RoutingStrategies.Tunnel);
                 _textBoxes.Add(tb);
                 _stackPanel.Children.Add(tb);
             }
+        
+            if (_textBoxes.Count > 0)
+            {
+                _textBoxes[0].Focus();
+            }
         }
 
         private async void TextBox_KeyDown(object? sender, KeyEventArgs e)
         {
             if (sender is not TextBox currentBox) return;
-            
+
+            // Block Tab and Space
+            if (e.Key == Key.Tab || e.Key == Key.Space)
+            {
+                e.Handled = true;
+                return;
+            }
+
             // Handle paste operation
             if (e.Key == Key.V && e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
                 e.Handled = true;
-                HandlePasteOperation();
+                await HandlePasteOperation();
                 return;
             }
-            
+
+            // Handle backspace
             if (e.Key == Key.Back)
             {
+                e.Handled = true;
                 int idx = _textBoxes.IndexOf(currentBox);
-                
-                // If current box is empty and not the first box, move to previous
-                if (string.IsNullOrEmpty(currentBox.Text) && idx > 0)
+                currentBox.Text = string.Empty;
+        
+                if (idx > 0)
                 {
-                    e.Handled = true;
                     var previousBox = _textBoxes[idx - 1];
                     previousBox.Focus();
                     previousBox.CaretIndex = previousBox.Text?.Length ?? 0;
-                    if (!string.IsNullOrEmpty(previousBox.Text))
-                    {
-                        previousBox.Text = string.Empty;
-                    }
+                }
+                return;
+            }
+
+            // Handle numeric input
+            if (OnlyNumbers && e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+                e.Handled = true;
+                int digit = (int)e.Key - (int)Key.D0;
+                currentBox.Text = digit.ToString();
+        
+                int idx = _textBoxes.IndexOf(currentBox);
+                if (idx < _textBoxes.Count - 1)
+                {
+                    _textBoxes[idx + 1].Focus();
                 }
             }
         }

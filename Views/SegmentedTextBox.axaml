@@ -1,6 +1,59 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AvaloniaApplication3.Views.SegmentedTextBox">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="MinWidth" Value="28"/>
+            <Setter Property="MaxLength" Value="1"/>
+            <Setter Property="Margin" Value="1,5,1,5"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
+            <Setter Property="AcceptsTab" Value="False"/>
+            <Setter Property="CaretBrush" Value="Transparent"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="SelectionBrush" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#FFE8E8E8"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6">
+                        <DockPanel>
+                            <TextPresenter Name="PART_TextPresenter"
+                                         Text="{TemplateBinding Text, Mode=TwoWay}"
+                                         CaretIndex="{TemplateBinding CaretIndex}"
+                                         SelectionStart="{TemplateBinding SelectionStart}"
+                                         SelectionEnd="{TemplateBinding SelectionEnd}"
+                                         TextAlignment="{TemplateBinding TextAlignment}"
+                                         TextWrapping="{TemplateBinding TextWrapping}"
+                                         PasswordChar="{TemplateBinding PasswordChar}"
+                                         RevealPassword="{TemplateBinding RevealPassword}"
+                                         SelectionBrush="{TemplateBinding SelectionBrush}"
+                                         SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                         CaretBrush="{TemplateBinding CaretBrush}"
+                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                         Margin="{TemplateBinding Padding}"/>
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="TextBox:focus">
+            <Setter Property="BorderBrush" Value="#6a5acd"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+        <Style Selector="TextBox:not(:focus)">
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+    </UserControl.Styles>
+
     <StackPanel Orientation="Horizontal" x:Name="PART_StackPanel"/>
 </UserControl>
-

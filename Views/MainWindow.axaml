@@ -18,7 +18,7 @@
 
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
         <TextBlock Text="Enter PIN:" HorizontalAlignment="Center"/>
-        <local:SegmentedTextBox x:Name="SegmentedTextBoxName" SegmentCount="4" OnlyNumbers="True"/>
+        <local:SegmentedTextBox x:Name="SegmentedTextBoxName" SegmentCount="10" OnlyNumbers="True"/>
         <TextBlock Text="{Binding Pin}" HorizontalAlignment="Center"/>
         <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center"/>
         
